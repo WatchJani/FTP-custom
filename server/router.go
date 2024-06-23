@@ -1,5 +1,9 @@
 package server
 
+import (
+	"net"
+)
+
 type Router struct {
 	handler map[string]handler
 }
@@ -20,4 +24,17 @@ func (r *Router) Listen(address string) error {
 	server.Listen()
 
 	return err
+}
+
+func (r *Router) ExecuteCmd(conn net.Conn, cmd, args string) error {
+	if fn, ok := r.handler[cmd]; ok {
+		fn(conn, args)
+	} else {
+		_, err := conn.Write([]byte(ErrorReq))
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

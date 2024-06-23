@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	r := s.NewRouter()
 
 	r.HandlerFunc("QUIT", Quit)

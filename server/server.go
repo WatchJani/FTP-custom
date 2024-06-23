@@ -56,14 +56,9 @@ func (s *Server) ReadLoop(conn net.Conn) {
 
 		cmd, args := Parser(payload[:n-1]) //Remove \n
 
-		if fn, ok := s.handler[cmd]; ok {
-			fn(conn, args)
-		} else {
-			_, err := conn.Write([]byte(ErrorReq))
-			if err != nil {
-				log.Println(err)
-				return
-			}
+		if err = s.ExecuteCmd(conn, cmd, args); err != nil {
+			log.Println(err)
+			return
 		}
 	}
 }
