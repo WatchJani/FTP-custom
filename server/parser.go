@@ -12,6 +12,7 @@ func Parser(payload []byte) (string, string) {
 				break
 			}
 		}
+
 	}
 
 	return par[0], par[1]
